@@ -23,10 +23,13 @@ public class BookService {
         Book book = repository.findById(id)
             .orElseThrow(() -> new RuntimeException("Book not found"));
 
+        String responseEnvoriment = "Book port:" + environment.getProperty("local.server.port");
+
         if (!currency.equals("USD")) {
             CambioResponse cambio = cambioProxy.getCambio(book.getPrice(), "USD", currency);
 
             book.setPrice(cambio.convertedValue());
+            responseEnvoriment += "|Cambio port: " + cambio.enviroment();
         }
 
         return new BookResponse(
@@ -36,6 +39,6 @@ public class BookService {
             book.getPrice(), 
             book.getTitle(), 
             currency, 
-            environment.getProperty("local.server.port"));
+            responseEnvoriment);
     }
 }
