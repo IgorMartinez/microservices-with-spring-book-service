@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.resilience4j.retry.annotation.Retry;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "Book endpoint")
 @RestController
 @RequestMapping("/book")
 public class BookController {
@@ -19,6 +22,7 @@ public class BookController {
     @Autowired
     private BookService service;
     
+    @Operation(summary = "Find a specific book by your ID")
     @GetMapping("/{id}/{currency}")
     public BookResponse findById(
         @PathVariable(name = "id") Long id,
@@ -27,6 +31,7 @@ public class BookController {
         return service.findById(id, currency);
     }
 
+    @Operation(summary = "Foo Bar")
     @GetMapping("/foo-bar")
     @Retry(name = "foo-bar", fallbackMethod = "fooBarFallback")
     //@CircuitBreaker(name = "default", fallbackMethod = "fooBarFallback")
