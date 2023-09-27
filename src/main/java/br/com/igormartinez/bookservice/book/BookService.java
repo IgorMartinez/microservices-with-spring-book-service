@@ -2,6 +2,7 @@ package br.com.igormartinez.bookservice.book;
 
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import br.com.igormartinez.bookservice.cambio.CambioProxy;
 import br.com.igormartinez.bookservice.cambio.CambioResponse;
@@ -40,5 +41,11 @@ public class BookService {
             book.getTitle(), 
             currency, 
             responseEnvoriment);
+    }
+
+    public String fooBar() {
+        var response = new RestTemplate()
+            .getForEntity("http://localhost:8080/foo-bar", String.class);
+        return response.getBody();
     }
 }
